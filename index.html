@@ -305,6 +305,36 @@ button:hover {
     color: var(--primary-color); /* Ensure calendar icon remains primary color */
 }
 
+.link-button {
+    display: inline-block;
+    margin: 5px 0;
+    padding: 10px 15px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 14px;
+}
+
+.link-button:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+#tts-info {
+    display: none;
+    color: red;
+    margin-top: 10px;
+}
+
+#tts-icon {
+    cursor: pointer;
+    color: var(--primary-color);
+    font-size: 20px;
+    margin-left: 10px;
+    margin-top: 20px; /* Added margin to position the icon further away */
+}
     </style>
 </head>
 <body>
@@ -377,12 +407,11 @@ button:hover {
             <div class="card">
                 <h3><i class="fas fa-exclamation-circle"></i> Kata-Kata Sukar:</h3>
                 <div id="difficult-words-list" class="difficult-words"></div>
-                <div id="tts-warning" style="display:none; color:red; margin-top:10px;">
-                    <p>Sila pasang pakej bahasa Melayu untuk fungsi TTS. 
-                    <a href="https://support.microsoft.com/en-us/help/22757/windows-10-hear-text-read-aloud" target="_blank">Windows</a> | 
-                    <a href="https://support.google.com/accessibility/android/answer/6006983?hl=en" target="_blank">Android</a> | 
-                    <a href="https://support.apple.com/guide/iphone/speech-and-voiceover-iph3e2e2cdc/ios" target="_blank">iOS</a>
-                    </p>
+                <i id="tts-icon" class="fas fa-info-circle"></i>
+                <div id="tts-info">
+                    <p>Sila pasang pakej suara Bahasa Melayu untuk fungsi text-to-speech (TTS).</p>
+                    <a href="https://support.microsoft.com/en-gb/topic/download-languages-and-voices-for-immersive-reader-read-mode-and-read-aloud-4c83a8d8-7486-42f7-8e46-2b0fdf753130" target="_blank" class="link-button">Windows</a>
+                    <a href="https://support.google.com/accessibility/android/answer/6006983?hl=en" target="_blank" class="link-button">Android</a>
                 </div>
             </div>
 
@@ -620,7 +649,7 @@ button:hover {
         if (malayVoice) {
             utterance.voice = malayVoice;
         } else {
-            document.getElementById('tts-warning').style.display = 'block';
+            document.getElementById('tts-info').style.display = 'block';
             console.warn('Malay voice not available on this device');
         }
 
@@ -812,9 +841,15 @@ button:hover {
             const voices = speechSynthesis.getVoices();
             const malayVoice = voices.find(voice => voice.lang === 'ms-MY');
             if (!malayVoice) {
-                document.getElementById('tts-warning').style.display = 'block';
+                document.getElementById('tts-icon').style.display = 'inline-block';
             }
         };
+    });
+
+    // Toggle TTS info visibility
+    document.getElementById('tts-icon').addEventListener('click', function() {
+        const ttsInfo = document.getElementById('tts-info');
+        ttsInfo.style.display = ttsInfo.style.display === 'none' ? 'block' : 'none';
     });
     </script>
 </body>
